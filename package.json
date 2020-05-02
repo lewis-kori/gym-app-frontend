@@ -23,7 +23,8 @@
     "chart.js": "^2.9.3",
     "hchs-vue-charts": "^1.2.8",
     "nuxt": "^2.0.0",
-    "nuxt-fontawesome": "^0.4.0"
+    "nuxt-fontawesome": "^0.4.0",
+    "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
