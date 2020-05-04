@@ -6,7 +6,13 @@
         lead="Be the best you can be"
         :style="image"
       >
-        <b-button variant="primary" href="#">Similar classes</b-button>
+        <nuxt-link
+          :to="{
+            name: 'classes-trainer-id',
+            params: { id: session.trainer.id }
+          }"
+          ><b-button variant="primary">Similar classes</b-button></nuxt-link
+        >
       </b-jumbotron>
     </div>
 
@@ -29,8 +35,13 @@
         </b-alert>
         <b-card style="background-color:#1E2022; color:grey;">
           <b-card-body>
-            <p>StartTime: {{ session.start_time }}</p>
-            <p>EndTime: {{ session.end_time }}</p>
+            <p>
+              StartTime:
+              {{ session.start_time | moment('dddd, MMMM, h:mm:ss') }}
+            </p>
+            <p>
+              EndTime: {{ session.end_time | moment('dddd, MMMM, h:mm:ss') }}
+            </p>
             <p>type: {{ session.category.name }}</p>
             <p
               class="btn btn-primary"

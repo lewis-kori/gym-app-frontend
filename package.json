@@ -24,6 +24,7 @@
     "hchs-vue-charts": "^1.2.8",
     "nuxt": "^2.0.0",
     "nuxt-fontawesome": "^0.4.0",
+    "vue-moment": "^4.1.0",
     "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {

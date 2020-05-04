@@ -36,7 +36,8 @@ export default {
    */
   plugins: [
     { src: '@/plugins/chart', ssr: false },
-    { src: '@/plugins/vuex-persistence' }
+    { src: '@/plugins/vuex-persistence' },
+    { src: '@/plugins/vue-moment' }
   ],
   /*
    ** Nuxt.js dev-modules

@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container for-about"></div>
-    </div>
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
+        <div class="col-md-12 text-center mt-3">
+          <nuxt-link :to="{ name: 'classes-new' }" class="btn btn-primary"
+            >New class</nuxt-link
+          >
+        </div>
+      </div>
+      <div class="row mt-5">
         <!-- <b-card-group> -->
         <b-card
           v-for="session in sessions"
@@ -43,16 +47,18 @@ export default {
     }
   },
   created() {
-    this.getAllClasses()
+    this.getTrainerClasses(this.$route.params.id)
   },
   methods: {
-    async getAllClasses() {
+    async getTrainerClasses(trainerId) {
       try {
-        await this.$axios.get(`gym/classes/all/`).then((response) => {
-          if (response.status === 200) {
-            this.sessions = response.data
-          }
-        })
+        await this.$axios
+          .get(`gym/classes/trainer/${trainerId}/`)
+          .then((response) => {
+            if (response.status === 200) {
+              this.sessions = response.data
+            }
+          })
       } catch (e) {
         this.error = e.response.data.detail
       }
@@ -65,14 +71,23 @@ export default {
 </script>
 
 <style scoped>
-.jumbotron {
-  background-image: url('~@/assets/images/img_bg_2.jpg');
-  background-size: cover;
-  height: 100vh;
+.btn-primary {
+  background: #dc2f2f !important;
+  color: #fff;
+  border: 2px solid #dc2f2f;
 }
-.card-img-top {
-  width: 100%;
-  height: 15vw;
-  object-fit: cover;
+.btn {
+  margin-right: 4px;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  padding: 8px 20px;
 }
 </style>

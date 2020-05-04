@@ -34,7 +34,15 @@
                   {{ loggedInUser.first_name }}
                 </template>
                 <b-dropdown-item href="#">training history</b-dropdown-item>
-                <b-dropdown-item href="#">profile</b-dropdown-item>
+                <b-dropdown-item
+                  ><nuxt-link
+                    :to="{
+                      name: 'profiles-members-id',
+                      params: { id: loggedInUser.id }
+                    }"
+                    >profile</nuxt-link
+                  ></b-dropdown-item
+                >
                 <b-dropdown-item @click="logout">Logout</b-dropdown-item>
               </b-nav-item-dropdown>
               <b-nav-item v-else :to="{ name: 'auth-login' }">Login</b-nav-item>
