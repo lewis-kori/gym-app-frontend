@@ -4,8 +4,12 @@
       <div class="col-md-12">
         <b-card>
           <b-card-body>
-            <b-card-title class="text-center">Create a new class</b-card-title>
-            <b-form method="post" @submit.prevent="newClass">
+            <b-card-title class="text-center">New class</b-card-title>
+            <b-form method="post" @submit.prevent="createSession">
+              <b-alert v-if="message" show variant="success">{{
+                message
+              }}</b-alert>
+              <b-alert v-if="error" show variant="warning">{{ error }}</b-alert>
               <b-form-group
                 id="name-1"
                 label="Class Name:"
@@ -25,13 +29,14 @@
                 id="cat"
                 label-for="categories"
                 label="Class category:"
-                >{{ categories }}
-                <h1 v-for="cat in categories" :key="cat.id">
-                  {{ cat.name }}
-                </h1>
-                <b-form-select id="categories" required :options="categories">
-                  <h2>helo</h2></b-form-select
+              >
+                <b-form-select
+                  id="categories"
+                  v-model="session.category"
+                  required
+                  :options="categories"
                 >
+                </b-form-select>
               </b-form-group>
               <b-form-group
                 id="desc"
@@ -39,7 +44,7 @@
                 label-for="description"
               >
                 <b-form-textarea
-                  id="descriptio:"
+                  id="description:"
                   v-model="session.description"
                   required
                   rows="3"
@@ -51,11 +56,50 @@
               <b-form-group id="day-1" label="Day of Week:" label-for="day"
                 ><b-form-select
                   id="day"
-                  v-model="session.day"
+                  v-model="session.day_of_week"
                   :options="days"
                   required
                 ></b-form-select
               ></b-form-group>
+              <div class="row">
+                <div class="col-md-6">
+                  <b-form-group
+                    id="starttime"
+                    label="Start time:"
+                    label-for="starttime"
+                    ><datetime
+                      v-model="session.start_time"
+                      type="datetime"
+                      use12-hour
+                      auto
+                    ></datetime>
+                  </b-form-group>
+                </div>
+                <div class="col-md-6">
+                  <b-form-group
+                    id="endtime"
+                    label="End time:"
+                    label-for="endttime"
+                    ><datetime
+                      v-model="session.end_time"
+                      type="datetime"
+                      use12-hour
+                      auto
+                    ></datetime>
+                  </b-form-group>
+                </div>
+                <vue-google-autocomplete
+                  id="map"
+                  ref="address"
+                  class="form-control m-3"
+                  placeholder="Start typing"
+                  @placechanged="getAddressData"
+                >
+                </vue-google-autocomplete>
+              </div>
+              <b-button class="col-md-12" type="submit" variant="primary"
+                >Login</b-button
+              >
             </b-form>
           </b-card-body>
         </b-card>
@@ -65,21 +109,26 @@
 </template>
 
 <script>
+import { Datetime } from 'vue-datetime'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+
 export default {
+  components: {
+    datetime: Datetime,
+    VueGoogleAutocomplete
+  },
   async asyncData({ $axios }) {
     try {
-      await $axios.get(`gym/classes/categories/`).then((response) => {
+      return await $axios.get(`gym/classes/categories/`).then((response) => {
         if (response.status === 200) {
-          const categories = [{ text: null, value: null }]
+          const categories = []
           response.data.forEach((category) => {
             const catDict = {
               text: category.name,
-              value: category.name,
-              id: category.id
+              value: category.id
             }
             categories.push(catDict)
           })
-          console.log(categories)
           return { categories }
         }
       })
@@ -91,10 +140,12 @@ export default {
     return {
       session: {
         name: '',
-        day: '',
+        day_of_week: '',
         description: '',
-        startTime: '',
-        endTime: ''
+        start_time: '',
+        end_time: '',
+        location: '',
+        category: ''
       },
       days: [
         { text: 'Sunday', value: 'Sunday' },
@@ -105,7 +156,36 @@ export default {
         { text: 'Friday', value: 'Friday' },
         { text: 'Saturday', value: 'Saturday' }
       ],
-      categories: []
+      message: null,
+      error: null
+    }
+  },
+  mounted() {
+    // To demonstrate functionality of exposed component functions
+    // Here we make focus on the user input
+    this.$refs.address.focus()
+  },
+  methods: {
+    async createSession() {
+      try {
+        await this.$axios
+          .post(`gym/classes/create/`, this.session)
+          .then((response) => {
+            if (response.status === 201) {
+              this.message = 'class has successfully been created'
+            }
+          })
+      } catch (e) {
+        this.error = 'Oops there is an error'
+      }
+    },
+    getAddressData(addressData, placeResultData, id) {
+      this.session.location =
+        addressData.route +
+        ', ' +
+        addressData.administrative_area_level_1 +
+        ', ' +
+        addressData.country
     }
   }
 }

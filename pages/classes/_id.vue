@@ -30,7 +30,10 @@
       </div>
 
       <div class="col-md-4 mr-2">
-        <b-alert v-model="showAlert" variant="success" dismissible>
+        <b-alert v-model="message" variant="success" dismissible>
+          {{ message }}
+        </b-alert>
+        <b-alert v-if="error" variant="warning" dismissible>
           {{ message }}
         </b-alert>
         <b-card style="background-color:#1E2022; color:grey;">
@@ -87,7 +90,6 @@ export default {
     return {
       error: null,
       message: null,
-      showAlert: false,
       image: {
         backgroundImage: `url(https://res.cloudinary.com/practicaldev/image/fetch/s--u_69avF7--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://res.cloudinary.com/practicaldev/image/fetch/s--GjyFBfuC--/c_imagga_scale%2Cf_auto%2Cfl_progressive%2Ch_420%2Cq_auto%2Cw_1000/https://thepracticaldev.s3.amazonaws.com/i/e9lyg282f6wxcu8rmd3y.jpg)`
       }
@@ -100,8 +102,7 @@ export default {
           .post(`gym/attendance/create/${id}/`)
           .then((response) => {
             if (response.status === 201) {
-              this.message = 'class has been created'
-              this.showAlert = true
+              this.message = 'class has been booked'
             }
           })
       } catch (e) {

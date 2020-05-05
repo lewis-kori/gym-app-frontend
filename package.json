@@ -22,12 +22,17 @@
     "bootstrap-vue": "^2.0.0",
     "chart.js": "^2.9.3",
     "hchs-vue-charts": "^1.2.8",
+    "luxon": "^1.24.1",
     "nuxt": "^2.0.0",
     "nuxt-fontawesome": "^0.4.0",
+    "vue-datetime": "^1.0.0-beta.13",
+    "vue-google-autocomplete": "^1.1.0",
     "vue-moment": "^4.1.0",
-    "vuex-persistedstate": "^3.0.1"
+    "vuex-persistedstate": "^3.0.1",
+    "weekstart": "^1.0.1"
   },
   "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
     "babel-eslint": "^10.0.1",

@@ -1,3 +1,4 @@
+require('dotenv').config()
 export default {
   mode: 'spa',
   /*
@@ -21,7 +22,12 @@ export default {
         href: '~/css/font-awesome.min.css'
       }
     ],
-    script: [{ src: 'https://use.fontawesome.com/releases/v5.0.11/js/all.js' }]
+    script: [
+      { src: 'https://use.fontawesome.com/releases/v5.0.11/js/all.js' },
+      {
+        src: `https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_API_KEY}&libraries=places`
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -37,7 +43,8 @@ export default {
   plugins: [
     { src: '@/plugins/chart', ssr: false },
     { src: '@/plugins/vuex-persistence' },
-    { src: '@/plugins/vue-moment' }
+    { src: '@/plugins/vue-moment' },
+    { src: '@/plugins/vue-datetime' }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -57,13 +64,14 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/pwa',
     '@neneos/nuxt-animate.css',
-    'nuxt-fontawesome'
+    'nuxt-fontawesome',
+    '@nuxtjs/dotenv'
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: { baseURL: 'http://127.0.0.1:8000/api/v1/' },
+  axios: { baseURL: process.env.baseURL },
 
   // auth module config
   auth: {
