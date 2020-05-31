@@ -48,7 +48,7 @@
                   <nuxt-link
                     v-elif="loggedInUser.role === 'Trainer'"
                     :to="{
-                      name: 'profiles-id',
+                      name: 'profiles-trainers-id',
                       params: { id: loggedInUser.id }
                     }"
                     >profile</nuxt-link

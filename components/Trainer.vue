@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="{ name: 'profiles-id', params: { id: trainer.id } }">
+  <nuxt-link :to="{ name: 'profiles-trainers-id', params: { id: trainer.id } }">
     <div class="card recipe-card">
       <img :src="trainer.image" class="card-img-top" />
       <div class="card-body">

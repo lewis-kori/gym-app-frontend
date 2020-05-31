@@ -25,7 +25,8 @@ export default {
     script: [
       { src: 'https://use.fontawesome.com/releases/v5.0.11/js/all.js' },
       {
-        src: `https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_API_KEY}&libraries=places`
+        src: `https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_API_KEY}&libraries=places`,
+        defer: true
       }
     ]
   },

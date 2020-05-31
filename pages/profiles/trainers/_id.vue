@@ -47,10 +47,22 @@
             ></nuxt-link>
             <hr />
             <span class="float-left mr-2"
-              ><i class="fas fa-chart-line"></i></span
-            ><b-card-text
+              ><i class="fas fa-chart-line"></i
+            ></span>
+            <b-card-text v-if="profile.user.id === loggedInUser.id"
               >My Trainings
               <span class="float-right"><i class="fas fa-angle-right"></i></span
+            ></b-card-text>
+
+            <b-card-text v-else
+              ><nuxt-link
+                :to="{
+                  name: 'profiles-trainers-personal-training-id',
+                  params: { id: profile.user.id }
+                }"
+                >Book Personal Training
+                <span class="float-right"
+                  ><i class="fas fa-angle-right"></i></span></nuxt-link
             ></b-card-text>
           </b-card-body>
         </b-card>
@@ -90,7 +102,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getProfile: 'trainers/trainer/getProfile'
+      getProfile: 'trainers/trainer/getProfile',
+      loggedInUser: 'loggedInUser'
     })
   },
   created() {

@@ -58,7 +58,10 @@
         </b-card>
         <!-- trainer pic -->
         <nuxt-link
-          :to="{ name: 'profiles-id', params: { id: session.trainer.id } }"
+          :to="{
+            name: 'profiles-trainers-id',
+            params: { id: session.trainer.id }
+          }"
         >
           <b-card
             title="Class Trainer"
