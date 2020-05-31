@@ -98,7 +98,7 @@
                 </vue-google-autocomplete>
               </div>
               <b-button class="col-md-12" type="submit" variant="primary"
-                >Login</b-button
+                >Submit</b-button
               >
             </b-form>
           </b-card-body>

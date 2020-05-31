@@ -46,7 +46,7 @@
                     >profile</nuxt-link
                   >
                   <nuxt-link
-                    v-elif="loggedInUser.role === 'Trainer'"
+                    v-else-if="loggedInUser.role === 'Trainer'"
                     :to="{
                       name: 'profiles-trainers-id',
                       params: { id: loggedInUser.id }

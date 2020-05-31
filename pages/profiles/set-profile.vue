@@ -17,6 +17,7 @@ import MemberProfileForm from '~/components/MemberProfileForm'
 import TrainerProfileForm from '~/components/TrainerProfileForm'
 
 export default {
+  middleware: 'myAuth',
   components: {
     MemberProfileForm,
     TrainerProfileForm

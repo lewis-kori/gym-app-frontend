@@ -76,6 +76,7 @@ import { Datetime } from 'vue-datetime'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 
 export default {
+  middleware: 'myAuth',
   components: {
     datetime: Datetime,
     VueGoogleAutocomplete

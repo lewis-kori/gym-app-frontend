@@ -50,8 +50,14 @@
               ><i class="fas fa-chart-line"></i
             ></span>
             <b-card-text v-if="profile.user.id === loggedInUser.id"
-              >My Trainings
-              <span class="float-right"><i class="fas fa-angle-right"></i></span
+              ><nuxt-link
+                :to="{
+                  name: 'profiles-trainers-personal-training-id-my-trainings',
+                  params: { id: profile.user.id }
+                }"
+                >My Trainings
+                <span class="float-right"
+                  ><i class="fas fa-angle-right"></i></span></nuxt-link
             ></b-card-text>
 
             <b-card-text v-else
