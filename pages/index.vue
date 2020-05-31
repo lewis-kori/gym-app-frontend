@@ -121,6 +121,7 @@ import GymSession from '@/components/GymSession'
 import Trainer from '@/components/Trainer'
 
 export default {
+  middleware: 'noProfile',
   components: {
     GymSession,
     Trainer

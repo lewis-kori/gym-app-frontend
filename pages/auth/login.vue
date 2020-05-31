@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <h2 class="text-center">Welcome Back!</h2>
+          <h2 class="text-center">Welcome {{ error }}!</h2>
 
           <Notification v-if="error" :message="error" />
 
@@ -76,7 +76,9 @@ export default {
         })
         this.$router.push('/')
       } catch (e) {
-        this.error = e.response.data.detail
+        if (e.response.status === 400) {
+          this.error = e.response.data.non_field_errors
+        }
       }
     }
   }

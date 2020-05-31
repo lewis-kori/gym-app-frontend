@@ -47,6 +47,7 @@
             </p>
             <p>type: {{ session.category.name }}</p>
             <p
+              v-if="loggedInUser.role === 'Member'"
               class="btn btn-primary"
               style="display: block;"
               @click="bookSession(session.id)"
@@ -75,6 +76,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   asyncData({ $axios, params, error }) {
     return $axios
@@ -94,6 +97,9 @@ export default {
         backgroundImage: `url(https://res.cloudinary.com/practicaldev/image/fetch/s--u_69avF7--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://res.cloudinary.com/practicaldev/image/fetch/s--GjyFBfuC--/c_imagga_scale%2Cf_auto%2Cfl_progressive%2Ch_420%2Cq_auto%2Cw_1000/https://thepracticaldev.s3.amazonaws.com/i/e9lyg282f6wxcu8rmd3y.jpg)`
       }
     }
+  },
+  computed: {
+    ...mapGetters(['loggedInUser'])
   },
   methods: {
     async bookSession(id) {

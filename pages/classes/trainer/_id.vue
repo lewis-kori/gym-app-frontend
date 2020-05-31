@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div class="row">
+      <div v-if="loggedInUser.role === 'Trainer'" class="row">
         <div class="col-md-12 text-center mt-3">
           <nuxt-link :to="{ name: 'classes-new' }" class="btn btn-primary"
             >New class</nuxt-link
@@ -39,12 +39,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
       sessions: [],
       error: ''
     }
+  },
+  computed: {
+    ...mapGetters(['loggedInUser'])
   },
   created() {
     this.getTrainerClasses(this.$route.params.id)

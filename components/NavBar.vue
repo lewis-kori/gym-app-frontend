@@ -10,7 +10,9 @@
         type="dark"
       >
         <div class="container">
-          <b-navbar-brand class="personal-logo">Gymie</b-navbar-brand>
+          <b-navbar-brand class="personal-logo"
+            ><nuxt-link to="/">Gymie</nuxt-link></b-navbar-brand
+          >
 
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -34,15 +36,24 @@
                   {{ loggedInUser.first_name }}
                 </template>
                 <b-dropdown-item href="#">training history</b-dropdown-item>
-                <b-dropdown-item
-                  ><nuxt-link
+                <b-dropdown-item>
+                  <nuxt-link
+                    v-if="loggedInUser.role === 'Member'"
                     :to="{
                       name: 'profiles-members-id',
                       params: { id: loggedInUser.id }
                     }"
                     >profile</nuxt-link
-                  ></b-dropdown-item
-                >
+                  >
+                  <nuxt-link
+                    v-elif="loggedInUser.role === 'Trainer'"
+                    :to="{
+                      name: 'profiles-id',
+                      params: { id: loggedInUser.id }
+                    }"
+                    >profile</nuxt-link
+                  >
+                </b-dropdown-item>
                 <b-dropdown-item @click="logout">Logout</b-dropdown-item>
               </b-nav-item-dropdown>
               <b-nav-item v-else :to="{ name: 'auth-login' }">Login</b-nav-item>
