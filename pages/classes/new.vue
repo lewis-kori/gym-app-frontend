@@ -53,14 +53,6 @@
                 ></b-form-textarea>
               </b-form-group>
 
-              <b-form-group id="day-1" label="Day of Week:" label-for="day"
-                ><b-form-select
-                  id="day"
-                  v-model="session.day_of_week"
-                  :options="days"
-                  required
-                ></b-form-select
-              ></b-form-group>
               <div class="row">
                 <div class="col-md-6">
                   <b-form-group
@@ -110,6 +102,7 @@
 
 <script>
 import { Datetime } from 'vue-datetime'
+import moment from 'moment'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 
 export default {
@@ -147,15 +140,6 @@ export default {
         location: '',
         category: ''
       },
-      days: [
-        { text: 'Sunday', value: 'Sunday' },
-        { text: 'Monday', value: 'Monday' },
-        { text: 'Tuesday', value: 'Tuesday' },
-        { text: 'Wednesday', value: 'Wednesday' },
-        { text: 'Thursday', value: 'Thursday' },
-        { text: 'Friday', value: 'Friday' },
-        { text: 'Saturday', value: 'Saturday' }
-      ],
       message: null,
       error: null
     }
@@ -167,6 +151,8 @@ export default {
   },
   methods: {
     async createSession() {
+      // const modifiedSession = this.session
+      this.session.day_of_week = this.momentDayString(this.session.start_time)
       try {
         await this.$axios
           .post(`gym/classes/create/`, this.session)
@@ -186,6 +172,9 @@ export default {
         addressData.administrative_area_level_1 +
         ', ' +
         addressData.country
+    },
+    momentDayString(date) {
+      return moment(date).format('dddd')
     }
   }
 }

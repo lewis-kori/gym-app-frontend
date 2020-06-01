@@ -8,7 +8,7 @@
             <div class="row justify-content-left">
               <div class="col-md-3">{{ profile.user.role }}</div>
               <div class="col-md-3">
-                {{ this.$route.name == 'profiles-id' }}
+                <!-- {{ this.$route.name == 'profiles-id' }} -->
               </div>
             </div>
           </template>
