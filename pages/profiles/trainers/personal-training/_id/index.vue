@@ -4,9 +4,7 @@
       <div class="col-md-12">
         <b-card>
           <b-card-body>
-            <b-card-title class="text-center"
-              >Booking Trainer {{ session.lat }}</b-card-title
-            >
+            <b-card-title class="text-center">Booking Trainer</b-card-title>
             <b-form method="post" @submit.prevent="createSession">
               <b-alert v-if="message" show variant="success">{{
                 message
@@ -109,7 +107,7 @@ export default {
           .post(`gym/personal-training/create/`, this.session)
           .then((response) => {
             if (response.status === 201) {
-              this.message = 'class has successfully been created'
+              this.message = 'Request has successfully been sent.'
             }
           })
       } catch (e) {

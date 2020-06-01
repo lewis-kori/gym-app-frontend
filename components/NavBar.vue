@@ -25,7 +25,7 @@
                 ></b-nav-item
               >
               <b-nav-item
-                ><nuxt-link :to="{ name: 'auth-register' }"
+                ><nuxt-link :to="{ name: 'classes-schedule' }"
                   >Schedule</nuxt-link
                 ></b-nav-item
               >
