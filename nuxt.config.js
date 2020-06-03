@@ -45,7 +45,8 @@ export default {
     { src: '@/plugins/chart', ssr: false },
     { src: '@/plugins/vuex-persistence' },
     { src: '@/plugins/vue-moment' },
-    { src: '@/plugins/vue-datetime' }
+    { src: '@/plugins/vue-datetime' },
+    { src: '@/plugins/vuelidate' }
   ],
   /*
    ** Nuxt.js dev-modules

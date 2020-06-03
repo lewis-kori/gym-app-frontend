@@ -13,7 +13,7 @@
               <b-form-group
                 id="name-1"
                 label="Class Name:"
-                description="A catchy name for the session"
+                description="Give the class a descriptive class name."
                 label-for="name"
               >
                 <b-form-input
@@ -60,11 +60,22 @@
                     label="Start time:"
                     label-for="starttime"
                     ><datetime
-                      v-model="session.start_time"
+                      v-model.lazy="$v.session.start_time.$model"
                       type="datetime"
                       use12-hour
                       auto
+                      :class="{
+                        'col-md-6 form-control is-valid':
+                          $v.session.start_time.timeMustBeAfter
+                      }"
+                      :state="$v.session.start_time.timeMustBeAfter"
                     ></datetime>
+                    <!-- <b-form-invalid-feedback
+                      v-if="!$v.session.start_time.timeMustBeAfter"
+                      class="error"
+                    >
+                      That time has already passed.
+                    </b-form-invalid-feedback> -->
                   </b-form-group>
                 </div>
                 <div class="col-md-6">
@@ -104,6 +115,7 @@
 import { Datetime } from 'vue-datetime'
 import moment from 'moment'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   components: {
@@ -175,6 +187,18 @@ export default {
     },
     momentDayString(date) {
       return moment(date).format('dddd')
+    }
+  },
+  validations: {
+    session: {
+      start_time: {
+        required,
+        timeMustBeAfter(value) {
+          const timeSet = moment(value)
+          const today = moment()
+          return timeSet.isAfter(today)
+        }
+      }
     }
   }
 }

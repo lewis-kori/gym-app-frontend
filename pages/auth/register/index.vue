@@ -71,19 +71,57 @@
                 placeholder="enter your phone number"
               ></b-form-input>
             </b-form-group>
+
             <b-form-group
               id="input-group-6"
+              :class="{ 'form-group--error': $v.auth.password.$error }"
               label="password:"
               label-for="password"
             >
               <b-form-input
                 id="password"
-                v-model="auth.password"
+                v-model.lazy="$v.auth.password.$model"
                 placeholder="enter a strong secure password"
                 type="password"
+                :state="$v.auth.password.minLength"
                 required
               ></b-form-input>
+              <b-form-invalid-feedback
+                v-if="!$v.auth.password.minLength"
+                class="error"
+              >
+                Password must have at least
+                {{ $v.auth.password.$params.minLength.min }} letters.
+              </b-form-invalid-feedback>
             </b-form-group>
+
+            <b-form-group
+              id="input-group-7"
+              :class="{ 'form-group--error': $v.auth.repeatPassword.$error }"
+              label="Repeat password:"
+              label-for="repeat-password"
+            >
+              <b-form-input
+                id="repeat-password"
+                v-model.lazy="$v.auth.repeatPassword.$model"
+                :state="$v.auth.repeatPassword.sameAsPassword"
+                placeholder="confirm password"
+                type="password"
+                required
+              >
+              </b-form-input>
+              <b-form-invalid-feedback
+                v-if="!$v.auth.repeatPassword.sameAsPassword"
+                class="error"
+              >
+                Passwords must be identical.
+              </b-form-invalid-feedback>
+            </b-form-group>
+
+            <tree-view
+              :data="$v"
+              :options="{ rootObjectKey: '$v', maxDepth: 2 }"
+            ></tree-view>
 
             <b-form-group
               id="input-group-5"
@@ -122,6 +160,7 @@
 </template>
 
 <script>
+import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import Notification from '@/components/Notification'
 
 export default {
@@ -138,7 +177,8 @@ export default {
         role: '',
         location: '',
         image: null,
-        password: ''
+        password: '',
+        repeatPassword: ''
       },
       accounts: [
         { text: 'Account Type', value: null },
@@ -149,29 +189,43 @@ export default {
       preview: ''
     }
   },
+  validations: {
+    auth: {
+      password: {
+        required,
+        minLength: minLength(6)
+      },
+      repeatPassword: {
+        sameAsPassword: sameAs('password')
+      }
+    }
+  },
   methods: {
     async register() {
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        try {
+          const config = {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
           }
-        }
-        const formData = new FormData()
-        for (const data in this.auth) {
-          formData.append(data, this.auth[data])
-        }
-        await this.$axios.post('auth/users/', formData, config)
+          const formData = new FormData()
+          for (const data in this.auth) {
+            formData.append(data, this.auth[data])
+          }
+          await this.$axios.post('auth/users/', formData, config)
 
-        await this.$auth.loginWith('local', {
-          data: {
-            email: this.auth.email,
-            password: this.auth.password
-          }
-        })
-        this.$router.push('/')
-      } catch (e) {
-        this.error = e.response.data
+          await this.$auth.loginWith('local', {
+            data: {
+              email: this.auth.email,
+              password: this.auth.password
+            }
+          })
+          this.$router.push('/')
+        } catch (e) {
+          this.error = e.response.data
+        }
       }
     }
   }
