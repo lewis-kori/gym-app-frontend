@@ -36,9 +36,10 @@
           :id="infoModal.id"
           ref="more-info-modal"
           :title="infoModal.content.member"
+          :request="selectedRequest"
           hide-footer
           scrollable
-          size="lg"
+          size="xl"
           @hide="resetInfoModal"
         >
           <div>
@@ -92,6 +93,39 @@
                 </b-col>
               </b-row>
             </b-card>
+            <!-- start map section -->
+            <b-row>
+              <!--  -->
+              <b-col class="md-12">
+                <GmapMap
+                  :center="{
+                    lat: parseFloat(infoModal.content.position_lat),
+                    lng: parseFloat(infoModal.content.position_lon)
+                  }"
+                  :zoom="9"
+                  map-type-id="terrain"
+                  style="width: 100%; height: 50rem;"
+                >
+                  <GmapCustomMarker
+                    :marker="{
+                      lat: parseFloat(infoModal.content.position_lat),
+                      lng: parseFloat(infoModal.content.position_lon)
+                    }"
+                    alignment="bottomright"
+                    @click="
+                      center = {
+                        lat: parseFloat(infoModal.content.position_lat),
+                        lng: parseFloat(infoModal.content.position_lon)
+                      }
+                    "
+                    ><img
+                      src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                    />
+                  </GmapCustomMarker>
+                </GmapMap>
+              </b-col>
+            </b-row>
+            <!-- end map section -->
             <b-row>
               <b-col class="md-5">
                 <b-button
@@ -126,8 +160,13 @@
 
 <script>
 import moment from 'moment'
+import GmapCustomMarker from 'vue2-gmap-custom-marker'
+
 export default {
   middleware: 'trainer',
+  components: {
+    GmapCustomMarker
+  },
   data() {
     return {
       sessions: [],
@@ -182,7 +221,9 @@ export default {
                 location_name: request.location_name,
                 gym_member_image: request.gym_member.image,
                 gym_member_email: request.gym_member.email,
-                gym_member_phone: request.gym_member.phone_number
+                gym_member_phone: request.gym_member.phone_number,
+                position_lat: request.lat,
+                position_lon: request.lon
               }
               this.sessions.push(reqDict)
             })

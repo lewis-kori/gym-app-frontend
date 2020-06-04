@@ -46,7 +46,8 @@ export default {
     { src: '@/plugins/vuex-persistence' },
     { src: '@/plugins/vue-moment' },
     { src: '@/plugins/vue-datetime' },
-    { src: '@/plugins/vuelidate' }
+    { src: '@/plugins/vuelidate' },
+    { src: '@/plugins/google-maps' }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -107,6 +108,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    transpile: [/^vue2-google-maps($|\/)/, /^vue2-gmap-custom-marker($|\/)/],
     extend(config, ctx) {}
   }
 }
