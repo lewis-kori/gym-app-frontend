@@ -84,10 +84,15 @@
                     label="End time:"
                     label-for="endttime"
                     ><datetime
-                      v-model="session.end_time"
+                      v-model.lazy="$v.session.end_time.$model"
                       type="datetime"
                       use12-hour
                       auto
+                      :class="{
+                        'col-md-6 form-control is-valid':
+                          $v.session.end_time.timeMustBeAfter
+                      }"
+                      :state="$v.session.end_time.timeMustBeAfter"
                     ></datetime>
                   </b-form-group>
                 </div>
@@ -163,18 +168,20 @@ export default {
   },
   methods: {
     async createSession() {
-      // const modifiedSession = this.session
-      this.session.day_of_week = this.momentDayString(this.session.start_time)
-      try {
-        await this.$axios
-          .post(`gym/classes/create/`, this.session)
-          .then((response) => {
-            if (response.status === 201) {
-              this.message = 'class has successfully been created'
-            }
-          })
-      } catch (e) {
-        this.error = 'Oops there is an error'
+      if (!this.$v.$invalid) {
+        // const modifiedSession = this.session
+        this.session.day_of_week = this.momentDayString(this.session.start_time)
+        try {
+          await this.$axios
+            .post(`gym/classes/create/`, this.session)
+            .then((response) => {
+              if (response.status === 201) {
+                this.message = 'class has successfully been created'
+              }
+            })
+        } catch (e) {
+          this.error = 'Oops there is an error'
+        }
       }
     },
     getAddressData(addressData, placeResultData, id) {
@@ -197,6 +204,15 @@ export default {
           const timeSet = moment(value)
           const today = moment()
           return timeSet.isAfter(today)
+        }
+      },
+      end_time: {
+        required,
+        timeMustBeAfter(value) {
+          const timeSet = moment(value)
+          const startTime = moment(this.start_time)
+          const today = moment()
+          return timeSet.isAfter(today) && timeSet.isAfter(startTime)
         }
       }
     }

@@ -30,15 +30,95 @@
             </b-button>
           </template>
         </b-table>
+
         <!-- Info modal -->
         <b-modal
           :id="infoModal.id"
-          :title="infoModal.title"
-          ok-only
+          ref="more-info-modal"
+          :title="infoModal.content.member"
+          hide-footer
+          scrollable
+          size="lg"
           @hide="resetInfoModal"
         >
-          <pre>{{ infoModal.content }}</pre>
+          <div>
+            <b-card no-body class="overflow-hidden">
+              <b-row no-gutters>
+                <b-col md="6">
+                  <b-card-img
+                    :src="infoModal.content.gym_member_image"
+                    :alt="infoModal.content.member"
+                    class="rounded-0"
+                  ></b-card-img>
+                </b-col>
+                <b-col md="6">
+                  <b-card-body :title="infoModal.content.member">
+                    <div class="row">
+                      <div class="col-md-12 shadow-sm mr-2 ml-2">
+                        <table class="table table-striped">
+                          <tbody>
+                            <tr>
+                              <th>Phone Number</th>
+                              <td>{{ infoModal.content.gym_member_phone }}</td>
+                            </tr>
+                            <tr>
+                              <th>Email</th>
+                              <td>{{ infoModal.content.gym_member_email }}</td>
+                            </tr>
+                            <tr>
+                              <th>Location Name</th>
+                              <td>{{ infoModal.content.location_name }}</td>
+                            </tr>
+                            <tr>
+                              <th>Terms</th>
+                              <td>{{ infoModal.content.terms }}</td>
+                            </tr>
+                            <tr>
+                              <th>Status</th>
+                              <td v-if="infoModal.content.is_accepted">
+                                <span class="badge badge-success"
+                                  >Accepted</span
+                                >
+                              </td>
+                              <td v-else>
+                                <span class="badge badge-warning">Pending</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </b-card-body>
+                </b-col>
+              </b-row>
+            </b-card>
+            <b-row>
+              <b-col class="md-5">
+                <b-button
+                  class="mt-3"
+                  variant="outline-warning"
+                  block
+                  @click="handleCancel(infoModal.content.requestId)"
+                  >Decline</b-button
+                >
+              </b-col>
+              <b-col class="md-5">
+                <b-button
+                  class="mt-3"
+                  variant="outline-success"
+                  block
+                  @click="handleOk(infoModal.content.requestId)"
+                  >Accept</b-button
+                >
+              </b-col>
+            </b-row>
+          </div>
         </b-modal>
+        <!-- end info modal -->
+
+        <!-- start message modal -->
+        <b-modal v-model="showMessageModal" ok-only>{{ message }}</b-modal>
+        <!-- end message modal -->
       </div>
     </div>
   </div>
@@ -66,7 +146,9 @@ export default {
         id: 'info-modal',
         title: '',
         content: ''
-      }
+      },
+      message: '',
+      showMessageModal: false
     }
   },
   created() {
@@ -94,8 +176,13 @@ export default {
                 created_at: this.moment(request.created_at),
                 start_time: this.moment(request.start_time),
                 end_time: this.moment(request.end_time),
+                terms: request.terms,
+                requestId: request.id,
                 is_accepted: request.is_accepted,
-                location_name: request.location_name
+                location_name: request.location_name,
+                gym_member_image: request.gym_member.image,
+                gym_member_email: request.gym_member.email,
+                gym_member_phone: request.gym_member.phone_number
               }
               this.sessions.push(reqDict)
             })
@@ -115,12 +202,54 @@ export default {
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
-      this.infoModal.content = JSON.stringify(item, null, 2)
+      this.infoModal.content = item
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
     resetInfoModal() {
       this.infoModal.title = ''
       this.infoModal.content = ''
+    },
+    async handleOk(requestId) {
+      try {
+        await this.$axios
+          .post(`gym/personal-training/accept/`, {
+            request_id: requestId,
+            accept: 'true'
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              this.$refs['more-info-modal'].hide()
+              this.message = response.data.detail
+              this.showMessageModal = true
+              this.sessions = []
+              this.getPersonalSessionRequests()
+            }
+          })
+      } catch (e) {
+        this.message = e.response.data.detail
+        this.showMessageModal = true
+      }
+    },
+    async handleCancel(requestId) {
+      try {
+        await this.$axios
+          .post(`gym/personal-training/accept/`, {
+            request_id: requestId,
+            accept: 'false'
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              this.$refs['more-info-modal'].hide()
+              this.message = response.data.detail
+              this.showMessageModal = true
+              this.sessions = []
+              this.getPersonalSessionRequests()
+            }
+          })
+      } catch (e) {
+        this.message = e.response.data.detail
+        this.showMessageModal = true
+      }
     }
   }
 }
