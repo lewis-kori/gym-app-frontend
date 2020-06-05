@@ -30,13 +30,13 @@
       </div>
 
       <div class="col-md-4 mr-2">
-        <b-alert v-model="message" variant="success" dismissible>
+        <b-alert v-model="showMessage" variant="success" dismissible>
           {{ message }}
         </b-alert>
-        <b-alert v-if="error" variant="warning" dismissible>
+        <b-alert v-if="showMessage" variant="warning" dismissible>
           {{ message }}
         </b-alert>
-        <b-card style="background-color:#1E2022; color:grey;">
+        <b-card style="">
           <b-card-body>
             <p>
               StartTime:
@@ -46,14 +46,40 @@
               EndTime: {{ session.end_time | moment('dddd, MMMM, h:mm:ss') }}
             </p>
             <p>type: {{ session.category.name }}</p>
-            <p
-              v-if="loggedInUser.role === 'Member'"
-              class="btn btn-primary"
-              style="display: block;"
-              @click="bookSession(session.id)"
-            >
-              Book now
-            </p>
+            <b-row v-if="loggedInUser.role === 'Member'">
+              <b-col class="md-12">
+                <p
+                  class="btn btn-primary"
+                  style="display: block;"
+                  @click="bookSession(session.id)"
+                >
+                  Book now
+                </p>
+              </b-col>
+            </b-row>
+            <!-- trainer buttons -->
+            <b-row v-else>
+              <b-col class="md-5">
+                <b-button
+                  class="btn"
+                  variant="outline-success"
+                  @click="bookSession(session.id)"
+                >
+                  Edit
+                </b-button>
+              </b-col>
+
+              <b-col class="md-5">
+                <b-button
+                  class="btn"
+                  variant="outline-warning"
+                  @click="toggleConfirmDelete"
+                >
+                  Delete
+                </b-button>
+              </b-col>
+              <!-- end trainer button -->
+            </b-row>
           </b-card-body>
         </b-card>
         <!-- trainer pic -->
@@ -63,10 +89,7 @@
             params: { id: session.trainer.id }
           }"
         >
-          <b-card
-            title="Class Trainer"
-            style="background-color:#1E2022; color:white; margin-top: 3rem;"
-          >
+          <b-card class="trainer" title="Class Trainer">
             <b-card-body>
               <b-img-lazy :src="session.trainer.image" fluid></b-img-lazy>
             </b-card-body>
@@ -75,6 +98,18 @@
         </nuxt-link>
       </div>
     </div>
+    <b-modal v-model="confirmDelete" size="sm"
+      >Are you sure you want to delete the class?😕 Members will be notified if
+      you confirm this action.
+      <template v-slot:modal-footer="{}">
+        <b-button size="sm" variant="success" @click="toggleConfirmDelete">
+          Cancel
+        </b-button>
+        <b-button size="sm" variant="danger" @click="deleteSession(session.id)">
+          confirm
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -94,11 +129,12 @@ export default {
   },
   data() {
     return {
-      error: null,
-      message: null,
+      message: '',
+      showMessage: false,
       image: {
         backgroundImage: `url(https://res.cloudinary.com/practicaldev/image/fetch/s--u_69avF7--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://res.cloudinary.com/practicaldev/image/fetch/s--GjyFBfuC--/c_imagga_scale%2Cf_auto%2Cfl_progressive%2Ch_420%2Cq_auto%2Cw_1000/https://thepracticaldev.s3.amazonaws.com/i/e9lyg282f6wxcu8rmd3y.jpg)`
-      }
+      },
+      confirmDelete: false
     }
   },
   computed: {
@@ -112,17 +148,61 @@ export default {
           .then((response) => {
             if (response.status === 201) {
               this.message = 'class has been booked'
+              this.showMessage = true
             }
           })
       } catch (e) {
-        this.error = 'oops there was an error'
+        this.message = 'oops there was an error'
+        this.showMessage = true
       }
+    },
+    async deleteSession(id) {
+      this.toggleConfirmDelete()
+      this.$toast.info('deleting class', {
+        iconPack: 'fontawesome',
+        icon: 'fa-hourglass-half',
+        position: 'bottom-right',
+        duration: 2000
+      })
+      try {
+        await this.$axios
+          .delete(`gym/classes/delete/${id}/`)
+          .then((response) => {
+            if (response.status === 204) {
+              this.$toast.success('class deleted', {
+                iconPack: 'fontawesome',
+                icon: 'fa-check-circle',
+                position: 'bottom-right',
+                duration: 2000
+              })
+              setTimeout(() => {
+                this.$router.push({
+                  name: 'classes-trainer-id',
+                  params: { id: this.session.trainer.id }
+                })
+              }, 100)
+            }
+          })
+      } catch (e) {
+        this.message = "oops, couldn't delete"
+      }
+    },
+    toggleConfirmDelete() {
+      this.confirmDelete = !this.confirmDelete
     }
   }
 }
 </script>
 
 <style scoped>
+.card {
+  background-color: #1e2022;
+  color: grey;
+}
+.trainer {
+  margin-top: 3rem;
+  color: white;
+}
 .btn-primary {
   background: #dc2f2f;
   color: #fff;

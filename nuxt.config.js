@@ -68,7 +68,8 @@ export default {
     '@nuxtjs/pwa',
     '@neneos/nuxt-animate.css',
     'nuxt-fontawesome',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/toast'
   ],
   /*
    ** Axios module configuration

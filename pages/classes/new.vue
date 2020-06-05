@@ -6,10 +6,6 @@
           <b-card-body>
             <b-card-title class="text-center">New class</b-card-title>
             <b-form method="post" @submit.prevent="createSession">
-              <b-alert v-if="message" show variant="success">{{
-                message
-              }}</b-alert>
-              <b-alert v-if="error" show variant="warning">{{ error }}</b-alert>
               <b-form-group
                 id="name-1"
                 label="Class Name:"
@@ -156,9 +152,7 @@ export default {
         end_time: '',
         location: '',
         category: ''
-      },
-      message: null,
-      error: null
+      }
     }
   },
   mounted() {
@@ -176,11 +170,23 @@ export default {
             .post(`gym/classes/create/`, this.session)
             .then((response) => {
               if (response.status === 201) {
-                this.message = 'class has successfully been created'
+                this.$toast.success('class has successfully been created', {
+                  position: 'bottom-right',
+                  iconPack: 'fontawesome',
+                  icon: 'fa-check-circle',
+                  duration: 3000
+                })
+                this.$router.push({
+                  name: 'classes-id',
+                  params: { id: response.data.id }
+                })
               }
             })
         } catch (e) {
-          this.error = 'Oops there is an error'
+          this.$toast.warning('Oops, there was an error. Please try again.', {
+            position: 'bottom-right',
+            duration: 5000
+          })
         }
       }
     },

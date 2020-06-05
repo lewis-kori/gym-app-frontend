@@ -102,7 +102,7 @@
                     lat: parseFloat(infoModal.content.position_lat),
                     lng: parseFloat(infoModal.content.position_lon)
                   }"
-                  :zoom="9"
+                  :zoom="16"
                   map-type-id="terrain"
                   style="width: 100%; height: 50rem;"
                 >
