@@ -15,8 +15,10 @@
             <div class="carousel-caption slider-text-inner text-center">
               <h1>This is a Lifestyle There is no Finish Line</h1>
               <p>
-                <a href="#" class="btn btn-primary btn-sm btn-learn"
-                  >Join Classes</a
+                <nuxt-link
+                  :to="{ name: 'classes-schedule' }"
+                  class="btn btn-primary btn-sm btn-learn"
+                  >Join Classes</nuxt-link
                 >
               </p>
             </div>
@@ -30,8 +32,10 @@
               <div class="slider-text-inner text-center">
                 <h1>Don't Stop When it Hurts, Stop When You're Done</h1>
                 <p>
-                  <a href="#" class="btn btn-primary btn-sm btn-learn"
-                    >Join Classes</a
+                  <nuxt-link
+                    :to="{ name: 'classes-schedule' }"
+                    class="btn btn-primary btn-sm btn-learn"
+                    >Join Classes</nuxt-link
                   >
                 </p>
               </div>

@@ -30,12 +30,6 @@
       </div>
 
       <div class="col-md-4 mr-2">
-        <b-alert v-model="showMessage" variant="success" dismissible>
-          {{ message }}
-        </b-alert>
-        <b-alert v-if="showMessage" variant="warning" dismissible>
-          {{ message }}
-        </b-alert>
         <b-card style="">
           <b-card-body>
             <p>
@@ -49,16 +43,25 @@
             <b-row v-if="loggedInUser.role === 'Member'">
               <b-col class="md-12">
                 <p
+                  v-if="session.current_user_booked"
+                  class="btn btn-primary"
+                  style="display: block;"
+                  @click="cancelSession(session.id)"
+                >
+                  Cancel Booking
+                </p>
+                <p
+                  v-else
                   class="btn btn-primary"
                   style="display: block;"
                   @click="bookSession(session.id)"
                 >
-                  Book now
+                  Book Now
                 </p>
               </b-col>
             </b-row>
             <!-- trainer buttons -->
-            <b-row v-else>
+            <b-row v-else-if="loggedInUser.role === 'Trainer'">
               <b-col class="md-5">
                 <b-button
                   class="btn"
@@ -80,6 +83,19 @@
               </b-col>
               <!-- end trainer button -->
             </b-row>
+            <!-- start booking display to anuthenticates users -->
+            <b-row v-else>
+              <b-col>
+                <p
+                  class="btn btn-primary"
+                  style="display: block;"
+                  @click="$router.push({ name: 'auth-login' })"
+                >
+                  Book Now
+                </p>
+              </b-col>
+            </b-row>
+            <!-- end display to unauthenticated users -->
           </b-card-body>
         </b-card>
         <!-- trainer pic -->
@@ -129,8 +145,6 @@ export default {
   },
   data() {
     return {
-      message: '',
-      showMessage: false,
       image: {
         backgroundImage: `url(https://res.cloudinary.com/practicaldev/image/fetch/s--u_69avF7--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://res.cloudinary.com/practicaldev/image/fetch/s--GjyFBfuC--/c_imagga_scale%2Cf_auto%2Cfl_progressive%2Ch_420%2Cq_auto%2Cw_1000/https://thepracticaldev.s3.amazonaws.com/i/e9lyg282f6wxcu8rmd3y.jpg)`
       },
@@ -147,13 +161,48 @@ export default {
           .post(`gym/attendance/create/${id}/`)
           .then((response) => {
             if (response.status === 201) {
-              this.message = 'class has been booked'
-              this.showMessage = true
+              this.$router.push({
+                name: 'classes-id',
+                params: { id: this.session.id }
+              })
+              this.$toast.success(response.data.detail, {
+                iconPack: 'fontawesome',
+                icon: 'fa-check-circle',
+                position: 'bottom-right',
+                duration: 2000
+              })
             }
           })
       } catch (e) {
-        this.message = 'oops there was an error'
-        this.showMessage = true
+        this.$toast.error(e.response.data.detail, {
+          position: 'bottom-right',
+          duration: 2000
+        })
+      }
+    },
+    async cancelSession(id) {
+      try {
+        await this.$axios
+          .post(`gym/attendance/cancel/`, { class_id: id })
+          .then((response) => {
+            if (response.status === 202) {
+              this.$router.push({
+                name: 'classes-id',
+                params: { id: this.session.id }
+              })
+              this.$toast.success(response.data.detail, {
+                iconPack: 'fontawesome',
+                icon: 'fa-check-circle',
+                position: 'bottom-right',
+                duration: 2000
+              })
+            }
+          })
+      } catch (e) {
+        this.$toast.error(e.response.data.detail, {
+          position: 'bottom-right',
+          duration: 2000
+        })
       }
     },
     async deleteSession(id) {
@@ -184,7 +233,10 @@ export default {
             }
           })
       } catch (e) {
-        this.message = "oops, couldn't delete"
+        this.$toast.error(e.response.data.detail, {
+          position: 'bottom-right',
+          duration: 2000
+        })
       }
     },
     toggleConfirmDelete() {

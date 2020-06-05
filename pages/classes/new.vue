@@ -183,10 +183,13 @@ export default {
               }
             })
         } catch (e) {
-          this.$toast.warning('Oops, there was an error. Please try again.', {
-            position: 'bottom-right',
-            duration: 5000
-          })
+          this.$toast.error(
+            'Oops, it appears there is an error, please try again.',
+            {
+              position: 'bottom-right',
+              duration: 5000
+            }
+          )
         }
       }
     },
