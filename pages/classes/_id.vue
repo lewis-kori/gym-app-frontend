@@ -60,9 +60,10 @@
                 </p>
               </b-col>
             </b-row>
+
             <!-- trainer buttons -->
             <b-row v-else-if="loggedInUser.role === 'Trainer'">
-              <b-col class="md-5">
+              <b-col v-if="loggedInUser.id === session.trainer.id" class="md-5">
                 <b-button
                   class="btn"
                   variant="outline-success"
@@ -72,7 +73,7 @@
                 </b-button>
               </b-col>
 
-              <b-col class="md-5">
+              <b-col v-if="loggedInUser.id === session.trainer.id" class="md-5">
                 <b-button
                   class="btn"
                   variant="outline-warning"
