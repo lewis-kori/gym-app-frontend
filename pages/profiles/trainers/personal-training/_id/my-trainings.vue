@@ -102,9 +102,9 @@
                     lat: parseFloat(infoModal.content.position_lat),
                     lng: parseFloat(infoModal.content.position_lon)
                   }"
-                  :zoom="16"
+                  :zoom="17"
                   map-type-id="terrain"
-                  style="width: 100%; height: 50rem;"
+                  class="map"
                 >
                   <GmapCustomMarker
                     :marker="{
@@ -295,3 +295,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.map {
+  width: 100%;
+  height: 50rem;
+}
+</style>

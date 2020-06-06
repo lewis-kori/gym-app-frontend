@@ -7,9 +7,6 @@
           <template>
             <div class="row justify-content-left">
               <div class="col-md-3">{{ profile.user.role }}</div>
-              <div class="col-md-3">
-                {{ this.$route.name == 'profiles-members-id' }}
-              </div>
             </div>
           </template>
         </div>

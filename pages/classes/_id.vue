@@ -2,7 +2,7 @@
   <div>
     <div>
       <b-jumbotron
-        header="BootstrapVue"
+        :header="session.name"
         lead="Be the best you can be"
         :style="image"
       >
