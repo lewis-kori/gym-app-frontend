@@ -31,25 +31,19 @@ export default {
   },
   data() {
     return {
-      profile: Object,
       sem: Object
     }
   },
   computed: {
     ...mapGetters({
-      error: 'trainers/trainer/error'
+      profile: 'trainers/trainer/profile'
     })
   },
   created() {
-    this.getTrainerProfile().then(() => {
-      this.getProfileFromStore(this.trainer.id)
-    })
+    this.getTrainerProfile(this.trainer.id)
   },
   methods: {
-    ...mapActions({ getTrainerProfile: 'trainers/trainer/getTrainerProfile' }),
-    getProfileFromStore(id) {
-      this.profile = this.$store.getters['trainers/trainer/getProfile'](id)
-    }
+    ...mapActions({ getTrainerProfile: 'trainers/trainer/getTrainerProfile' })
   }
 }
 </script>

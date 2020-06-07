@@ -28,9 +28,15 @@
               <span class="float-left mr-2"
                 ><i class="fas fa-chart-line"></i></span></nuxt-link
             ><b-card-text
-              >Trainings
-              <span class="float-right"><i class="fas fa-angle-right"></i></span
-            ></b-card-text>
+              ><nuxt-link
+                :to="{
+                  name: 'profiles-my-trainings'
+                }"
+                >My Personal Trainings
+                <span class="float-right"
+                  ><i class="fas fa-angle-right"></i></span
+              ></nuxt-link>
+            </b-card-text>
           </b-card-body>
           <b-card-body v-else>
             <span class="float-left mr-2"><i class="fas fa-signal"></i></span

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="trainerUser">
     <div class="top-section">
       <b-jumbotron :style="image" class="jumbotron">
         <div class="jumbotron-content">
@@ -52,8 +52,7 @@
             <b-card-text v-if="profile.user.id === loggedInUser.id"
               ><nuxt-link
                 :to="{
-                  name: 'profiles-trainers-personal-training-id-my-trainings',
-                  params: { id: profile.user.id }
+                  name: 'profiles-my-trainings'
                 }"
                 >My Trainings
                 <span class="float-right"
@@ -96,11 +95,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      profile: Object,
+      // profile: Object,
       image: {
         backgroundImage: `url(https://res.cloudinary.com/lewiskori/image/upload/v1588417374/gym%20app/ryan-de-hamer-WIPIAJW2-P8-unsplash_wem52x.jpg)`
       }
@@ -108,12 +107,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getProfile: 'trainers/trainer/getProfile',
+      profile: 'trainers/trainer/profile',
+      trainerUser: 'trainers/trainer/trainerUser',
       loggedInUser: 'loggedInUser'
     })
   },
   created() {
-    this.profile = this.getProfile(this.$route.params.id)
+    this.getTrainerProfile(this.$route.params.id)
+  },
+  methods: {
+    ...mapActions({ getTrainerProfile: 'trainers/trainer/getTrainerProfile' })
   }
 }
 </script>

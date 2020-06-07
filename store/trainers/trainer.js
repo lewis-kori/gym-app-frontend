@@ -1,10 +1,6 @@
 export const state = () => ({
   trainers: [],
-  profile: {
-    profiles: [],
-    message: '',
-    error: ''
-  },
+  profile: {},
   error: ''
 })
 
@@ -13,7 +9,7 @@ export const mutations = {
     state.trainers = payload
   },
   setTrainerProfile(state, payload) {
-    state.profile.profiles = payload
+    state.profile = payload
   },
   setError(state, error) {
     state.error = error
@@ -33,12 +29,14 @@ export const actions = {
         commit('setError', e)
       })
   },
-  async getTrainerProfile({ commit }) {
+  async getTrainerProfile({ commit }, id) {
     await this.$axios
-      .get(`users/trainers/profiles/`)
+      .get(`users/trainers/profiles/${id}/`)
       .then((response) => {
         if (response.status === 200) {
-          commit('setTrainerProfile', response.data)
+          if (response.data.user) {
+            commit('setTrainerProfile', response.data)
+          }
         }
       })
       .catch((e) => {
@@ -49,9 +47,9 @@ export const actions = {
 
 export const getters = {
   trainers: (state) => state.trainers,
-  profiles: (state) => state.profile.profiles,
-  getProfile: (state) => (id) => {
-    return state.profile.profiles.find((profile) => profile.user.id === id)
-  },
-  errors: (state) => state.error
+  profile: (state) => state.profile,
+  errors: (state) => state.error,
+  trainerUser: (state) => {
+    return state.profile.user
+  }
 }

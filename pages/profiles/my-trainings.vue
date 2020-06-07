@@ -126,7 +126,12 @@
               </b-col>
             </b-row>
             <!-- end map section -->
-            <b-row>
+            <b-row
+              v-if="
+                loggedInUser.role === 'Trainer' &&
+                  !infoModal.content.is_accepted
+              "
+            >
               <b-col class="md-5">
                 <b-button
                   class="mt-3"
@@ -146,6 +151,27 @@
                 >
               </b-col>
             </b-row>
+
+            <b-row v-else-if="infoModal.content.is_accepted">
+              <b-col v-if="loggedInUser.role === 'Trainer'" class="md-12">
+                <b-button
+                  class="mt-3"
+                  variant="outline-warning"
+                  block
+                  @click="handleTrainerCancel(infoModal.content.requestId)"
+                  >Cancel</b-button
+                >
+              </b-col>
+              <b-col v-else-if="loggedInUser.role === 'Member'" class="md-12">
+                <b-button
+                  class="mt-3"
+                  variant="outline-warning"
+                  block
+                  @click="handleMemberCancel(infoModal.content.requestId)"
+                  >Cancel</b-button
+                >
+              </b-col>
+            </b-row>
           </div>
         </b-modal>
         <!-- end info modal -->
@@ -161,9 +187,10 @@
 <script>
 import moment from 'moment'
 import GmapCustomMarker from 'vue2-gmap-custom-marker'
+import { mapGetters } from 'vuex'
 
 export default {
-  middleware: 'trainer',
+  middleware: 'myAuth',
   components: {
     GmapCustomMarker
   },
@@ -189,6 +216,9 @@ export default {
       message: '',
       showMessageModal: false
     }
+  },
+  computed: {
+    ...mapGetters(['loggedInUser'])
   },
   created() {
     setTimeout(() => {
@@ -271,13 +301,32 @@ export default {
         this.showMessageModal = true
       }
     },
-    async handleCancel(requestId) {
+    async handleTrainerCancel(requestId) {
       try {
+        const deleteData = { request_id: requestId, accept: 'false' }
+
         await this.$axios
-          .post(`gym/personal-training/accept/`, {
-            request_id: requestId,
-            accept: 'false'
+          .post(`gym/personal-training/accept/`, deleteData)
+          .then((response) => {
+            if (response.status === 200) {
+              this.$refs['more-info-modal'].hide()
+              this.message = response.data.detail
+              this.showMessageModal = true
+              this.sessions = []
+              this.getPersonalSessionRequests()
+            }
           })
+      } catch (e) {
+        this.message = e.response.data.detail
+        this.showMessageModal = true
+      }
+    },
+    async handleMemberCancel(requestId) {
+      try {
+        const deleteData = { request_id: requestId, member_cancellation: true }
+
+        await this.$axios
+          .post(`gym/personal-training/member/cancel/`, deleteData)
           .then((response) => {
             if (response.status === 200) {
               this.$refs['more-info-modal'].hide()
