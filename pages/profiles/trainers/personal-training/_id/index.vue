@@ -52,8 +52,9 @@
                 <vue-google-autocomplete
                   id="map"
                   ref="address"
+                  :country="['ke', 'tz', 'ug']"
                   class="form-control m-3"
-                  placeholder="Start typing"
+                  placeholder="Location of where the trainer should come."
                   @placechanged="getAddressData"
                 >
                 </vue-google-autocomplete>

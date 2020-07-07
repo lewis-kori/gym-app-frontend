@@ -248,6 +248,7 @@ export default {
                 terms: request.terms,
                 requestId: request.id,
                 is_accepted: request.is_accepted,
+                member_cancellation: request.member_cancellation,
                 location_name: request.location_name,
                 gym_member_image: request.gym_member.image,
                 gym_member_email: request.gym_member.email,
