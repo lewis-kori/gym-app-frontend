@@ -9,7 +9,7 @@
       img-height="480"
       interval="4000"
     >
-      <b-carousel-slide img-src="@/assets/images/img_bg_1.jpg"
+      <b-carousel-slide img-src="@/assets/images/img_bg_2.jpg"
         ><div class="row">
           <div class="col-sm-12 slider-text">
             <div class="carousel-caption slider-text-inner text-center">
@@ -49,7 +49,7 @@
       ></b-carousel-slide>
       <b-carousel-slide
         caption="fourth Slide"
-        img-src="@/assets/images/img_bg_4.jpg"
+        img-src="@/assets/images/img_bg_2.jpg"
       ></b-carousel-slide>
     </b-carousel>
 

@@ -11,9 +11,38 @@
               }}</b-alert>
               <b-alert v-if="error" show variant="warning">{{ error }}</b-alert>
 
-              <b-form-group id="termsLabel" label="Terms:" label-for="terms">
+              <b-form-group label="Terms:">
+                <b-form-checkbox
+                  v-model="session.transport"
+                  name="checkbox-1"
+                  value="true"
+                  unchecked-value="false"
+                >
+                  Provide transport
+                </b-form-checkbox>
+                <b-form-checkbox
+                  v-model="session.gloves"
+                  value="true"
+                  unchecked-value="false"
+                >
+                  Come with gloves
+                </b-form-checkbox>
+                <b-form-checkbox
+                  v-model="session.weights"
+                  value="true"
+                  unchecked-value="false"
+                >
+                  Come with weights
+                </b-form-checkbox>
+              </b-form-group>
+
+              <b-form-group
+                id="extraTermsLabel"
+                label="Extra Terms:"
+                label-for="ExtraTerms"
+              >
                 <b-form-textarea
-                  id="terms:"
+                  id="ExtraTerms:"
                   v-model="session.terms"
                   required
                   rows="3"
@@ -83,6 +112,9 @@ export default {
   data() {
     return {
       session: {
+        transport: false,
+        gloves: false,
+        weights: false,
         terms: '',
         start_time: '',
         end_time: '',

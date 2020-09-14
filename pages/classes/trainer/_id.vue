@@ -15,7 +15,7 @@
           :key="session.id"
           class="col-lg-4 mb-2"
           ><img
-            src="@/assets/images/img_bg_4.jpg"
+            src="@/assets/images/img_bg_3.jpg"
             class="card-img-top"
             alt="ok"
           />

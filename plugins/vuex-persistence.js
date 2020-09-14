@@ -4,8 +4,9 @@ export default ({ store, isHMR }) => {
   if (isHMR) {
     return
   }
-
-  window.onNuxtReady((nuxt) => {
-    createPersistedState()(store)
-  })
+  if (process.client) {
+    window.onNuxtReady((nuxt) => {
+      createPersistedState()(store)
+    })
+  }
 }
