@@ -75,6 +75,33 @@
                               <td>{{ infoModal.content.terms }}</td>
                             </tr>
                             <tr>
+                              <th>Transport</th>
+                              <td v-if="infoModal.content.transport">
+                                <span class="badge badge-success">yes</span>
+                              </td>
+                              <td v-else>
+                                <span class="badge badge-warning">No</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Weights</th>
+                              <td v-if="infoModal.content.weights">
+                                <span class="badge badge-success">yes</span>
+                              </td>
+                              <td v-else>
+                                <span class="badge badge-warning">No</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>Gloves</th>
+                              <td v-if="infoModal.content.gloves">
+                                <span class="badge badge-success">yes</span>
+                              </td>
+                              <td v-else>
+                                <span class="badge badge-warning">No</span>
+                              </td>
+                            </tr>
+                            <tr>
                               <th>Status</th>
                               <td v-if="infoModal.content.is_accepted">
                                 <span class="badge badge-success"
@@ -246,6 +273,9 @@ export default {
                 start_time: this.moment(request.start_time),
                 end_time: this.moment(request.end_time),
                 terms: request.terms,
+                gloves: request.gloves,
+                transport: request.transport,
+                weights: request.weights,
                 requestId: request.id,
                 is_accepted: request.is_accepted,
                 member_cancellation: request.member_cancellation,

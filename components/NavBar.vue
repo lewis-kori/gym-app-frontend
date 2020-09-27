@@ -69,6 +69,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  name: 'NavBar',
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },

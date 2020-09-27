@@ -3,10 +3,12 @@
     <MemberProfileForm
       v-if="loggedInUser.role === 'Member'"
       :user="loggedInUser"
+      @redirect-homepage="redirectHomePage"
     />
     <TrainerProfileForm
       v-if="loggedInUser.role === 'Trainer'"
       :user="loggedInUser"
+      @redirect-homepage="redirectHomePage"
     />
   </div>
 </template>
@@ -24,6 +26,14 @@ export default {
   },
   computed: {
     ...mapGetters(['loggedInUser'])
+  },
+  methods: {
+    redirectHomePage() {
+      this.$store.commit('setProfile')
+      this.$router.push({
+        name: 'index'
+      })
+    }
   }
 }
 </script>

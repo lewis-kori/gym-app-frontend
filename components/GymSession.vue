@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  name: 'GymSession',
   props: {
     // eslint-disable-next-line vue/require-default-prop
     session: Object

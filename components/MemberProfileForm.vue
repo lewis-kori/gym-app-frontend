@@ -32,6 +32,7 @@
 import Notification from './Notification'
 
 export default {
+  name: 'MemberProfile',
   components: {
     Notification
   },
@@ -57,7 +58,7 @@ export default {
           .post('users/members/create/', { description: this.description })
           .then((response) => {
             if (response.status === 201) {
-              this.$router.push('/')
+              this.$emit('redirect-homepage')
             }
           })
       } catch (e) {

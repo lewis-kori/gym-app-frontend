@@ -25,6 +25,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  name: 'Trainer',
   props: {
     // eslint-disable-next-line vue/require-default-prop
     trainer: Object

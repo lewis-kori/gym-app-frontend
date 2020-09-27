@@ -42,6 +42,7 @@
 import Notification from './Notification'
 
 export default {
+  name: 'TrainerProfile',
   components: {
     Notification
   },
@@ -71,7 +72,7 @@ export default {
           .post('users/trainers/profiles/', this.profile)
           .then((response) => {
             if (response.status === 201) {
-              this.$router.push('/')
+              this.$emit('redirect-homepage')
             }
           })
       } catch (e) {
