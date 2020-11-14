@@ -70,12 +70,12 @@
                               <th>Location Name</th>
                               <td>{{ infoModal.content.location_name }}</td>
                             </tr>
-                            <tr>
+                            <tr v-if="infoModal.content.terms">
                               <th>Terms</th>
                               <td>{{ infoModal.content.terms }}</td>
                             </tr>
                             <tr>
-                              <th>Transport</th>
+                              <th>Transport Provided by trainee</th>
                               <td v-if="infoModal.content.transport">
                                 <span class="badge badge-success">yes</span>
                               </td>
@@ -84,7 +84,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <th>Weights</th>
+                              <th>Trainer to Carry Weights</th>
                               <td v-if="infoModal.content.weights">
                                 <span class="badge badge-success">yes</span>
                               </td>
@@ -93,7 +93,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <th>Gloves</th>
+                              <th>Trainee needs Gloves</th>
                               <td v-if="infoModal.content.gloves">
                                 <span class="badge badge-success">yes</span>
                               </td>

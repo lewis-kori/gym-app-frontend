@@ -1,31 +1,26 @@
 <template>
-  <div class="row">
-    <div class="col-md-6">
-      <b-card title="my stats">
-        <b-card-body>
-          <canvas id="categoryHistory" />
-          <chartjs-bar
-            v-for="(item, index) in types"
-            :key="index"
-            :backgroundcolor="item.bgColor"
-            :bind="true"
-            :bordercolor="item.borderColor"
-            :data="item.data"
-            :datalabel="item.dataLabel"
-            :labels="labels"
-            target="categoryHistory"
-          >
-          </chartjs-bar>
-        </b-card-body>
-      </b-card>
+  <client-only>
+    <div class="row">
+      <div class="col-md-6">
+        <b-card title="my stats">
+          <b-card-body>
+            <bar-chart
+              v-if="barChartData.labels.length > 0"
+              :data="barChartData"
+              :options="barChartOptions"
+              :height="200"
+            />
+          </b-card-body>
+        </b-card>
+      </div>
     </div>
-  </div>
+  </client-only>
 </template>
 
 <script>
-import { Bar } from 'hchs-vue-charts'
+import BarChart from '~/components/Charts/BarChart'
 export default {
-  extends: Bar,
+  components: { BarChart },
   data() {
     return {
       error: null,
@@ -37,25 +32,75 @@ export default {
           data: [],
           dataLabel: 'Workout type'
         }
-      ]
+      ],
+      barChartData: {
+        labels: [],
+        datasets: []
+      },
+      barChartOptions: {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: 'Work Out Type',
+          fontSize: 24,
+          fontColor: '#6b7280'
+        },
+        tooltips: {
+          backgroundColor: '#17BF62'
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false
+              }
+            }
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              },
+              gridLines: {
+                display: false
+              }
+            }
+          ]
+        }
+      }
     }
   },
-  created() {
+  mounted() {
     this.getCategoryHistory()
   },
-  beforeDestroy() {
+  beforeRouteLeave(to, from, next) {
     this.labels = []
     this.types[0].data = []
+    next()
   },
   methods: {
     async getCategoryHistory() {
       try {
         await this.$axios.get(`gym/attendance/category/`).then((response) => {
           if (response.status === 200) {
-            response.data.forEach((category) => this.labels.push(category.name))
-            response.data.forEach((category) =>
-              this.types[0].data.push(category.attendance_count)
-            )
+            response.data.forEach((category) => {
+              // if (!this.barChartData.labels.includes(category.name)) {
+              this.barChartData.labels.push(category.name)
+              this.barChartData.datasets.push({
+                label: category.name,
+                data: [category.attendance_count],
+                backgroundColor: '#003f5c'
+              })
+              // }
+            })
+            // response.data.forEach((category) => {
+            //   // if (!this.barChartData.data.includes(category.attendance_count)) {
+            //     this.barChartData.datasets.push(category.attendance_count)
+            //   // }
+            // })
           }
         })
       } catch (e) {

@@ -35,7 +35,11 @@
                 ><template v-slot:button-content>
                   {{ loggedInUser.first_name }}
                 </template>
-                <b-dropdown-item href="#">training history</b-dropdown-item>
+                <b-dropdown-item v-if="loggedInUser.role === 'Member'"
+                  ><nuxt-link :to="{ name: 'profiles-members-stats' }"
+                    >Personal Training</nuxt-link
+                  ></b-dropdown-item
+                >
                 <b-dropdown-item>
                   <nuxt-link
                     v-if="loggedInUser.role === 'Member'"

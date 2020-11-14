@@ -44,7 +44,6 @@
                 <b-form-textarea
                   id="ExtraTerms:"
                   v-model="session.terms"
-                  required
                   rows="3"
                   max-rows="6"
                   placeholder="Give the trainer some information before they arrive"

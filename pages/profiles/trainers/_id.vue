@@ -3,13 +3,11 @@
     <div class="top-section">
       <b-jumbotron :style="image" class="jumbotron">
         <div class="jumbotron-content">
-          <h1>{{ profile.user.first_name }}</h1>
+          <h1>{{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
           <template>
             <div class="row justify-content-left">
               <div class="col-md-3">{{ profile.user.role }}</div>
-              <div class="col-md-3">
-                <!-- {{ this.$route.name == 'profiles-id' }} -->
-              </div>
+              <div class="col-md-3"></div>
             </div>
           </template>
         </div>

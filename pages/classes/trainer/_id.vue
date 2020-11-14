@@ -8,7 +8,7 @@
           >
         </div>
       </div>
-      <div class="row mt-5">
+      <div v-if="sessions.length > 0" class="row mt-5">
         <!-- <b-card-group> -->
         <b-card
           v-for="session in sessions"
@@ -33,6 +33,15 @@
         </b-card>
 
         <!-- </b-card-group> -->
+      </div>
+      <div v-else class="mx-auto my-auto">
+        <b-card
+          class="mx-auto h-50 w-50"
+          img-src="https://res.cloudinary.com/lewiskori/image/upload/v1604402655/gym%20app/empty_inbox__p6epq1.svg"
+          img-top
+          style="margin-top:14rem;"
+          title="Trainer doesn't have classes yet"
+        ></b-card>
       </div>
     </div>
   </div>
