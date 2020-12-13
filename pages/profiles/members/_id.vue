@@ -61,21 +61,26 @@
         </b-card>
       </div>
     </div>
-    <div class="row mt-5">
+    <div v-if="loggedInUser.id === $route.params.id" class="row mt-5">
       <div class="col-md-12">
         <b-card class="text-left ml-auto mr-auto w-50"
           ><b-card-body>
             <span class="float-left mr-2"><i class="fas fa-user-alt"></i></span
-            ><b-card-text
-              >account
-              <span class="float-right"><i class="fas fa-angle-right"></i></span
-            ></b-card-text>
+            ><nuxt-link :to="{ name: 'profiles-account-me' }">
+              <b-card-text
+                >account
+                <span class="float-right"
+                  ><i class="fas fa-angle-right"></i></span
+              ></b-card-text>
+            </nuxt-link>
             <hr />
             <span class="float-left mr-2"><i class="fas fa-user-cog"></i></span
-            ><b-card-text
-              >settings
-              <span class="float-right"><i class="fas fa-angle-right"></i></span
-            ></b-card-text> </b-card-body
+            ><nuxt-link :to="{ name: 'settings' }">
+              <b-card-text
+                >settings
+                <span class="float-right"
+                  ><i class="fas fa-angle-right"></i></span></b-card-text
+            ></nuxt-link> </b-card-body
         ></b-card>
       </div>
     </div>

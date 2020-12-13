@@ -5,7 +5,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Technogym' || process.env.npm_package_name,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -26,6 +26,11 @@ export default {
       { src: 'https://use.fontawesome.com/releases/v5.0.11/js/all.js' },
       {
         src: `https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_API_KEY}&libraries=places`,
+        defer: true
+      },
+      {
+        hid: 'tawk.to',
+        src: `https://embed.tawk.to/${process.env.TAWK_TO}/default`,
         defer: true
       }
     ]
@@ -54,7 +59,9 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/svg',
+    '@nuxtjs/color-mode'
   ],
   /*
    ** Nuxt.js modules
@@ -71,6 +78,9 @@ export default {
     '@nuxtjs/dotenv',
     '@nuxtjs/toast'
   ],
+  toast: {
+    duration: 2000
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options

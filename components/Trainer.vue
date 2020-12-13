@@ -1,23 +1,25 @@
 <template>
   <nuxt-link :to="{ name: 'profiles-trainers-id', params: { id: trainer.id } }">
-    <div class="card recipe-card">
+    <div class="card recipe-card h-100">
       <img :src="trainer.image" class="card-img-top" />
       <div class="card-body">
         <h5 class="card-title">
           {{ trainer.first_name }} {{ trainer.last_name }}
         </h5>
         <p>{{ profile.description }}</p>
-        <hr />
-        <p class="card-text">
-          <strong>Specialities:</strong>
-          <span
-            v-for="speciality in profile.specialities"
-            :key="speciality.id"
-            class="badge badge-pill badge-info mr-1"
-          >
-            {{ speciality.name }}
-          </span>
-        </p>
+        <div class="mt-auto">
+          <hr />
+          <p class="card-text">
+            <strong>Specialities:</strong>
+            <span
+              v-for="speciality in profile.specialities"
+              :key="speciality.id"
+              class="badge badge-pill badge-info mr-1"
+            >
+              {{ speciality.name }}
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   </nuxt-link>

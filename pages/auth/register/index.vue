@@ -1,5 +1,5 @@
 <template>
-  <section id="header">
+  <section id="header" class="mb-3">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
@@ -145,7 +145,29 @@
                 drop-placeholder="Drop picture here..."
               ></b-form-file>
             </b-form-group>
-            <b-button class="col-md-12" type="submit" variant="primary"
+            <b-form-group class="text-center">
+              <nuxt-link :to="{ name: 'legal' }" target="__blank">
+                <p>Terms of service</p>
+              </nuxt-link>
+            </b-form-group>
+            <b-form-group class="text-center">
+              <b-form-checkbox
+                id="checkbox-1"
+                v-model="status"
+                name="checkbox-1"
+                value="accepted"
+                unchecked-value="not_accepted"
+                switch
+              >
+                I accept the terms and conditions
+              </b-form-checkbox>
+            </b-form-group>
+
+            <b-button
+              class="col-md-12 mt-2"
+              type="submit"
+              variant="primary"
+              :disabled="status !== 'accepted'"
               >Register</b-button
             >
           </b-form>
@@ -181,10 +203,11 @@ export default {
         repeatPassword: ''
       },
       accounts: [
-        { text: 'Account Type', value: null },
+        { text: 'Account Type', value: '' },
         { value: 'Trainer', text: 'Trainer' },
         { value: 'Member', text: 'Member' }
       ],
+      status: 'not accepted',
       error: '',
       preview: ''
     }

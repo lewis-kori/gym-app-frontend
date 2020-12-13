@@ -2,14 +2,13 @@
   <div>
     <b-carousel
       id="carousel-fade"
-      style="text-shadow: 0px 0px 2px #000"
       fade
       indicators
       img-width="1024"
       img-height="480"
-      interval="4000"
+      :interval="4000"
     >
-      <b-carousel-slide img-src="@/assets/images/img_bg_2.jpg"
+      <b-carousel-slide img-src="@/assets/images/crossfit.jpeg"
         ><div class="row">
           <div class="col-sm-12 slider-text">
             <div class="carousel-caption slider-text-inner text-center">
@@ -43,14 +42,42 @@
           </div>
         </div></b-carousel-slide
       >
-      <b-carousel-slide
-        caption="Third Slide"
-        img-src="@/assets/images/img_bg_3.jpg"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        caption="fourth Slide"
-        img-src="@/assets/images/img_bg_2.jpg"
-      ></b-carousel-slide>
+      <b-carousel-slide img-src="@/assets/images/img_bg_3.jpg"
+        ><div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-md-offset-2 slider-text">
+              <div class="slider-text-inner text-center">
+                <h1>Every step is progress</h1>
+                <p>
+                  <nuxt-link
+                    :to="{ name: 'classes-schedule' }"
+                    class="btn btn-primary btn-sm btn-learn"
+                    >Join Classes</nuxt-link
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </b-carousel-slide>
+      <b-carousel-slide img-src="@/assets/images/pushups.jpeg"
+        ><div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-md-offset-2 slider-text">
+              <div class="slider-text-inner text-center">
+                <h1>Push through the pain, on the other side is the reward</h1>
+                <p>
+                  <nuxt-link
+                    :to="{ name: 'classes-schedule' }"
+                    class="btn btn-primary btn-sm btn-learn"
+                    >Join Classes</nuxt-link
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </b-carousel-slide>
     </b-carousel>
 
     <div id="schedule" class="light-grey">
@@ -108,7 +135,10 @@
         </div>
 
         <div class="row">
-          <template v-for="trainer in trainers">
+          <template
+            v-for="trainer in trainers"
+            class="h-100 d-flex flex-column"
+          >
             <div :key="trainer.id" class="col-lg-3 col-md-4 col-sm-6 mb-4">
               <Trainer :on-delete="deleteRecipe" :trainer="trainer"></Trainer>
             </div>

@@ -40,7 +40,7 @@
               EndTime: {{ session.end_time | moment('dddd, MMMM, h:mm:ss') }}
             </p>
             <p>type: {{ session.category.name }}</p>
-            <b-row v-if="loggedInUser.role === 'Member'">
+            <b-row v-if="isAuthenticated && loggedInUser.role === 'Member'">
               <b-col class="md-12">
                 <p
                   v-if="session.current_user_booked"
@@ -62,12 +62,19 @@
             </b-row>
 
             <!-- trainer buttons -->
-            <b-row v-else-if="loggedInUser.role === 'Trainer'">
+            <b-row
+              v-else-if="isAuthenticated && loggedInUser.role === 'Trainer'"
+            >
               <b-col v-if="loggedInUser.id === session.trainer.id" class="md-5">
                 <b-button
                   class="btn"
                   variant="outline-success"
-                  @click="bookSession(session.id)"
+                  @click="
+                    $router.push({
+                      name: 'classes-edit-id',
+                      params: { id: session.id }
+                    })
+                  "
                 >
                   Edit
                 </b-button>
@@ -153,7 +160,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['loggedInUser'])
+    ...mapGetters(['loggedInUser', 'isAuthenticated'])
   },
   methods: {
     async bookSession(id) {

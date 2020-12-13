@@ -29,15 +29,13 @@
                   >Schedule</nuxt-link
                 ></b-nav-item
               >
-              <b-nav-item>Trainers</b-nav-item>
-              <b-nav-item>Contact</b-nav-item>
               <b-nav-item-dropdown v-if="isAuthenticated" right
                 ><template v-slot:button-content>
                   {{ loggedInUser.first_name }}
                 </template>
                 <b-dropdown-item v-if="loggedInUser.role === 'Member'"
                   ><nuxt-link :to="{ name: 'profiles-members-stats' }"
-                    >Personal Training</nuxt-link
+                    ><span class="text-dark">Personal Training</span></nuxt-link
                   ></b-dropdown-item
                 >
                 <b-dropdown-item>
