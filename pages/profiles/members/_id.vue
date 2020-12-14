@@ -61,7 +61,7 @@
         </b-card>
       </div>
     </div>
-    <div v-if="loggedInUser.id === $route.params.id" class="row mt-5">
+    <div v-if="loggedInUser.id === parseInt($route.params.id)" class="row mt-5">
       <div class="col-md-12">
         <b-card class="text-left ml-auto mr-auto w-50"
           ><b-card-body>
@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   asyncData({ $axios, params, error }) {
     return $axios
@@ -107,6 +108,9 @@ export default {
         backgroundImage: `url(https://res.cloudinary.com/lewiskori/image/upload/v1588417374/gym%20app/ryan-de-hamer-WIPIAJW2-P8-unsplash_wem52x.jpg)`
       }
     }
+  },
+  computed: {
+    ...mapGetters(['loggedInUser'])
   }
 }
 </script>

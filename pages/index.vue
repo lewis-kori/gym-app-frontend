@@ -140,7 +140,7 @@
             class="h-100 d-flex flex-column"
           >
             <div :key="trainer.id" class="col-lg-3 col-md-4 col-sm-6 mb-4">
-              <Trainer :on-delete="deleteRecipe" :trainer="trainer"></Trainer>
+              <Trainer :trainer="trainer"></Trainer>
             </div>
           </template>
         </div>

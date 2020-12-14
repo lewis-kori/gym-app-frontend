@@ -15,6 +15,13 @@
               ></span
             >
           </li>
+          <li v-if="loggedInUser.role === 'Member'" class="nav-item hoverable">
+            <span :class="[{ active: activeTab === 'next-of-kin' }, 'nav-link']"
+              ><span @click="switchActiveTab('next-of-kin')"
+                >Next of kin</span
+              ></span
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -27,19 +34,35 @@
         <PasswordChange />
       </b-col>
     </b-row>
+    <b-row
+      v-else-if="activeTab === 'next-of-kin' && loggedInUser.role === 'Member'"
+    >
+      <b-col class="text-right"
+        ><b-button v-b-modal.next-of-kin variant="primary" size="sm"
+          >New</b-button
+        ></b-col
+      >
+      <b-col cols="12">
+        <b-table striped hover :items="nextOfKin"></b-table>
+      </b-col>
+      <hr />
+    </b-row>
+    <NextOfKin @retrieve-NOK="retrieveNOK" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Profile from '../../../components/Users/Profile'
+import NextOfKin from '../../../components/Users/NextOfKin'
 import PasswordChange from '../../../components/Users/PasswordChange'
 export default {
   middleware: 'auth',
-  components: { Profile, PasswordChange },
+  components: { Profile, PasswordChange, NextOfKin },
   data() {
     return {
-      activeTab: 'profile'
+      activeTab: 'profile',
+      nextOfKin: []
     }
   },
   computed: {
@@ -47,9 +70,33 @@ export default {
       loggedInUser: 'loggedInUser'
     })
   },
+  created() {
+    this.retrieveNOK()
+  },
   methods: {
     switchActiveTab(tab) {
       this.activeTab = tab
+    },
+    async retrieveNOK() {
+      try {
+        await this.$axios.get('users/members/next-of-kin/').then((response) => {
+          if (response.status === 200) {
+            this.nextOfKin = []
+            const data = response.data
+            if (data.length > 0) {
+              data.forEach((element) => {
+                this.nextOfKin.push({
+                  firstName: element.first_name,
+                  lastName: element.last_name,
+                  phone: element.phone_number
+                })
+              })
+            }
+          }
+        })
+      } catch (e) {
+        this.$toast.error('Could not retrieve next of kin')
+      }
     }
   }
 }

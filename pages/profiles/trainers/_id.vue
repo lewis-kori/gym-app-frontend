@@ -71,7 +71,7 @@
         </b-card>
       </div>
     </div>
-    <div v-if="loggedInUser.id === $route.params.id" class="row mt-5">
+    <div v-if="loggedInUser.id === parseInt($route.params.id)" class="row mt-5">
       <div class="col-md-12">
         <b-card class="text-left ml-auto mr-auto w-50"
           ><b-card-body>
