@@ -228,7 +228,7 @@ export default {
       sortDesc: false,
       fields: [
         { key: 'member', label: 'Member', sortable: true },
-        { key: 'created_at', sortable: true },
+        { key: 'created_at', sortable: true, label: 'Requested at' },
         { key: 'start_time', sortable: true },
         { key: 'end_time', sortable: true },
         { key: 'location_name', label: 'location' },
@@ -372,6 +372,9 @@ export default {
         this.showMessageModal = true
       }
     }
+  },
+  head: {
+    title: 'Personal training'
   }
 }
 </script>
